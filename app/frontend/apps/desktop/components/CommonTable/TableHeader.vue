@@ -92,7 +92,21 @@ let headerWidthsRelativeStorage: Ref<Record<string, number>> = ref({})
 const setHeaderWidths = (reset?: boolean) => {
   if (!tableElement.value || !tableElement.value.parentElement) return
 
-  const availableWidth = tableElement.value.parentElement.clientWidth
+  // Get consistent available width regardless of scrollbar presence.
+  // When the container has overflow-y-auto, scrollbars appear/disappear based on content,
+  // causing clientWidth to fluctuate. This makes table-fixed columns shimmer as widths recalculate.
+  // Solution: Use the container's scrollWidth for stable measurements. When no horizontal scroll
+  // is needed, scrollWidth equals clientWidth; when there is, we get the full content width.
+  const parentElement = tableElement.value.parentElement as HTMLElement
+  let availableWidth = parentElement.clientWidth
+
+  // Account for scrollbar width by checking if we have vertical scrolling
+  // If scrollHeight > clientHeight, a scrollbar exists and took width from clientWidth
+  if (parentElement.scrollHeight > parentElement.clientHeight) {
+    // Standard scrollbar width is ~15px, but be conservative and add it back
+    const scrollbarWidth = 15
+    availableWidth += scrollbarWidth
+  }
 
   const tableWidth = availableWidth < MINIMUM_TABLE_WIDTH ? MINIMUM_TABLE_WIDTH : availableWidth
 
