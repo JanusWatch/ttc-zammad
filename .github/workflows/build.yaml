@@ -27,3 +27,5 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/januswatch/ttc-zammad:${{ github.ref_name }}
+          build-args: |
+            COMMIT_SHA=${{ github.sha }}
