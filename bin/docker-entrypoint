@@ -129,10 +129,20 @@ elif [ "$1" = 'zammad-nginx' ]; then
   # There is a workaround needed to support DNS resolution of upstream container names with short TTL:
   #   we set the proxy pass directly with a variable including the URL (!), rather than just referring to the
   #   upstream {} definition. For details, see https://tenzer.dk/nginx-with-dynamic-upstreams/.
+  #
+  # The Host header sent to each upstream is rewritten from the same
+  # ZAMMAD_RAILSSERVER_HOST/ZAMMAD_WEBSOCKET_HOST variables used above,
+  # independently of the request's own Host (preserved via
+  # X-Forwarded-Host in zammad.conf). Some platforms route internal
+  # service-to-service traffic based on the Host header rather than just
+  # the destination address, and need it to identify the upstream being
+  # called rather than the original external caller.
   sed -e "s#\(listen\)\(.*\)80#\1\2${NGINX_PORT}#g" \
       -e "s#proxy_set_header X-Forwarded-Proto .*;#proxy_set_header X-Forwarded-Proto ${NGINX_SERVER_SCHEME};#g" \
       -e "s#proxy_pass http://zammad-railsserver;#set \$zammad_railsserver_url http://${ZAMMAD_RAILSSERVER_HOST}:${ZAMMAD_RAILSSERVER_PORT}; proxy_pass \$zammad_railsserver_url;#g" \
       -e "s#proxy_pass http://zammad-websocket;#set \$zammad_websocket_url http://${ZAMMAD_WEBSOCKET_HOST}:${ZAMMAD_WEBSOCKET_PORT}; proxy_pass \$zammad_websocket_url;#g" \
+      -e "s#proxy_set_header Host zammad-railsserver;#proxy_set_header Host ${ZAMMAD_RAILSSERVER_HOST};#g" \
+      -e "s#proxy_set_header Host zammad-websocket;#proxy_set_header Host ${ZAMMAD_WEBSOCKET_HOST};#g" \
       -e "s#server_name .*#server_name ${NGINX_SERVER_NAME};#g" \
       -e "s#client_max_body_size .*#client_max_body_size ${NGINX_CLIENT_MAX_BODY_SIZE};#g" \
       -e 's#/var/log/nginx/zammad.\(access\|error\).log#/dev/stdout#g' < contrib/nginx/zammad.conf > /etc/nginx/sites-enabled/default
