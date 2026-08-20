@@ -19,6 +19,7 @@ module Gql::Types
       field :vip, Boolean
       field :domain, String
       field :domain_assignment, Boolean
+      field :email_address_id, Integer
       field :members, Gql::Types::UserType.connection_type, description: 'Users assigned via primary organization'
       field :secondary_members, Gql::Types::UserType.connection_type, description: 'Users assigned via secondary organization'
       field :all_members, Gql::Types::UserType.connection_type, description: 'All assigned users'

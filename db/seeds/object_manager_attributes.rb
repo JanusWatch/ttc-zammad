@@ -1961,6 +1961,42 @@ ObjectManager::Attribute.add(
 ObjectManager::Attribute.add(
   force:       true,
   object:      'Organization',
+  name:        'email_address_id',
+  display:     __('Mailbox'),
+  data_type:   'select',
+  data_option: {
+    default:    '',
+    multiple:   false,
+    null:       true,
+    relation:   'EmailAddress',
+    nulloption: true,
+    do_not_log: true,
+    note:       __('The mailbox from which follow-up emails on any ticket of this organization are sent, and to which incoming emails are assigned as tickets of this organization.'),
+  },
+  editable:    false,
+  internal:    true,
+  active:      true,
+  screens:     {
+    create: {
+      '-all-' => {
+        null: true,
+      },
+    },
+    edit:   {
+      '-all-' => {
+        null: true,
+      },
+    },
+  },
+  to_create:   false,
+  to_migrate:  false,
+  to_delete:   false,
+  position:    1460,
+)
+
+ObjectManager::Attribute.add(
+  force:       true,
+  object:      'Organization',
   name:        'note',
   display:     __('Note'),
   data_type:   'richtext',
