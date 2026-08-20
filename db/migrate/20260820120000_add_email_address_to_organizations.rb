@@ -2,7 +2,7 @@
 
 class AddEmailAddressToOrganizations < ActiveRecord::Migration[7.2]
   def change
-    add_reference :organizations, :email_address, foreign_key: true, null: true
+    add_reference :organizations, :email_address, type: :integer, foreign_key: true, null: true
 
     # return if it's a new setup - the seeds already cover this case
     return if !Setting.exists?(name: 'system_init_done')
