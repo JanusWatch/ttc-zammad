@@ -11,6 +11,7 @@ module Gql::Types::Input
     argument :domain, String, required: false, description: 'The organization domain'
     argument :domain_assignment, Boolean, required: false, description: 'The organization domain assignment flag'
     argument :vip, Boolean, required: false, description: 'The organization VIP flag'
+    argument :email_address_id, Integer, required: false, description: 'The organization mailbox email address id'
     argument :active, Boolean, required: false, description: 'The organization active flag'
     argument :note, String, required: false, description: 'The organization note'
   end

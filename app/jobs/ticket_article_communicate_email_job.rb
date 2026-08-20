@@ -40,14 +40,18 @@ class TicketArticleCommunicateEmailJob < ApplicationJob
       email_address = EmailAddress.find_by(id: record.preferences['email_address_id'])
     end
 
-    # fallback for articles without email_address_id
+    # fallback for articles without email_address_id - the ticket's organization mailbox takes precedence over the group's
     if !email_address
-      if !ticket.group.email_address_id
-        log_error(record, "No email address defined for group id '#{ticket.group.id}'!")
-      elsif !ticket.group.email_address.channel_id
-        log_error(record, "No channel defined for email_address id '#{ticket.group.email_address_id}'!")
+      email_address = ticket.organization&.email_address
+
+      if !email_address
+        if !ticket.group.email_address_id
+          log_error(record, "No email address defined for group id '#{ticket.group.id}'!")
+        elsif !ticket.group.email_address.channel_id
+          log_error(record, "No channel defined for email_address id '#{ticket.group.email_address_id}'!")
+        end
+        email_address = ticket.group.email_address
       end
-      email_address = ticket.group.email_address
     end
 
     # log if ref objects are missing

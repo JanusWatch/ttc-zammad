@@ -55,8 +55,8 @@ module Ticket::Article::AddsMetadataEmail
   end
 
   def metadata_email_process_email_address
-    # set sender
-    email_address = ticket.group.email_address
+    # set sender - the ticket's organization mailbox takes precedence over the group's, if configured
+    email_address = ticket.organization&.email_address || ticket.group.email_address
 
     if !email_address
       raise "No email address found for group '#{ticket.group.fullname}' (#{ticket.group_id})"
@@ -81,7 +81,7 @@ module Ticket::Article::AddsMetadataEmail
   end
 
   def metadata_email_process_from
-    email_address = ticket.group.email_address
+    email_address = ticket.organization&.email_address || ticket.group.email_address
 
     self.from = Channel::EmailBuild.recipient_line(recipient_name(email_address), email_address.email)
   end

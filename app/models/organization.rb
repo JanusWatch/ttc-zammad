@@ -27,6 +27,8 @@ class Organization < ApplicationModel
   has_and_belongs_to_many :secondary_members, class_name: 'User', after_add: :member_update, after_remove: :member_update
   has_many :tickets, class_name: 'Ticket'
 
+  belongs_to :email_address, optional: true
+
   before_create :domain_cleanup
   before_update :domain_cleanup
 
