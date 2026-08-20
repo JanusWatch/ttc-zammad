@@ -5133,6 +5133,10 @@ msgstr ""
 msgid "Defines postmaster filter to identify ticket group."
 msgstr ""
 
+#: db/seeds/settings.rb:4488
+msgid "Defines postmaster filter to identify ticket organization based on the mailbox the email arrived on."
+msgstr ""
+
 #: db/seeds/settings.rb:4415
 msgid "Defines postmaster filter to manage Checkmk (http://mathias-kettner.com/check_mk.html) emails."
 msgstr ""
@@ -9996,6 +10000,10 @@ msgstr ""
 
 #: app/assets/javascripts/app/models/macro.coffee
 msgid "Macros make it easy to automate common, multi-step tasks within Zammad.\n\nYou can use macros in Zammad to automate recurring sequences, saving time (and nerves). This allows a combined sequence of actions on the ticket to be executed with just one click."
+msgstr ""
+
+#: db/seeds/object_manager_attributes.rb:1965
+msgid "Mailbox"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:177
@@ -16982,6 +16990,10 @@ msgstr ""
 
 #: app/services/service/auth/verify_admin_token.rb:16
 msgid "The login is not possible."
+msgstr ""
+
+#: db/seeds/object_manager_attributes.rb:1974
+msgid "The mailbox from which follow-up emails on any ticket of this organization are sent, and to which incoming emails are assigned as tickets of this organization."
 msgstr ""
 
 #: app/frontend/shared/components/Form/fields/FieldDate/useDateTime.ts:104
