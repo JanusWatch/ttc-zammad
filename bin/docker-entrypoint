@@ -126,11 +126,8 @@ elif [ "$1" = 'zammad-nginx' ]; then
   # stable regardless of replica count/rescheduling - and the workaround
   # was actively harmful for regular HTTP traffic (intermittently
   # truncated larger responses; see zammad.conf's upstream block comments
-  # for the full story). railsserver/websocket no longer use dynamic
-  # resolution, but the /analytics/ (Grafana) route does, since Grafana is
-  # optional and a static upstream would stop nginx from starting at all
-  # in environments where it isn't present - see that location block's
-  # comment in zammad.conf.
+  # for the full story). Nothing in zammad.conf uses dynamic resolution
+  # any more, but this is left in place since it's harmless either way.
   NAMESERVER=$(grep "^nameserver" --max-count 1 < /etc/resolv.conf | awk '{print $2}')
   echo "resolver $NAMESERVER valid=5s;" > /etc/nginx/conf.d/resolver.conf
 
