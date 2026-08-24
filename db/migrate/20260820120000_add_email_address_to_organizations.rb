@@ -7,6 +7,11 @@ class AddEmailAddressToOrganizations < ActiveRecord::Migration[7.2]
     # return if it's a new setup - the seeds already cover this case
     return if !Setting.exists?(name: 'system_init_done')
 
+    # ObjectManager::Attribute validates created_by/updated_by; a migration has
+    # no request/user context, so set one explicitly (mirrors Zammad's own
+    # migrations, e.g. 20230801092655_issue_4543_organization_vip.rb).
+    UserInfo.current_user_id = 1
+
     ObjectManager::Attribute.add(
       force:       true,
       object:      'Organization',
