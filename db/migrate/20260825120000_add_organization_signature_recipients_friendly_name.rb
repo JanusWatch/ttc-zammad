@@ -6,6 +6,8 @@ class AddOrganizationSignatureRecipientsFriendlyName < ActiveRecord::Migration[7
     add_column :organizations, :recommended_recipients, :string, limit: 8000, null: true
     add_column :organizations, :friendly_name, :string, limit: 150, null: true
 
+    Organization.reset_column_information
+
     # The identify_organization postmaster pre-filter was removed: Zammad's
     # check_default_organization derives the ticket organization from the
     # sender (customer) and overrides any mailbox-stamped value, so the filter
