@@ -1997,13 +1997,15 @@ ObjectManager::Attribute.add(
 ObjectManager::Attribute.add(
   force:       true,
   object:      'Organization',
-  name:        'signature',
+  name:        'signature_id',
   display:     __('Signature'),
-  data_type:   'richtext',
+  data_type:   'select',
   data_option: {
     default:    '',
+    multiple:   false,
     null:       true,
-    maxlength:  30_000,
+    relation:   'Signature',
+    nulloption: true,
     do_not_log: true,
   },
   editable:    false,

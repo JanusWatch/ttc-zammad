@@ -28,6 +28,7 @@ class Organization < ApplicationModel
   has_many :tickets, class_name: 'Ticket'
 
   belongs_to :email_address, optional: true
+  belongs_to :signature, optional: true
 
   before_create :domain_cleanup
   before_update :domain_cleanup

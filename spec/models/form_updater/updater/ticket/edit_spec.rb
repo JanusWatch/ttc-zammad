@@ -145,20 +145,24 @@ RSpec.describe(FormUpdater::Updater::Ticket::Edit) do
         group.update!(signature: create(:signature, body: 'GROUP SIGNATURE'))
       end
 
-      context 'when the organization signature is present' do
+      context 'when the organization has a signature selected' do
+        let(:organization_signature) do
+          create(:signature, body: 'Org signature for #{ticket.customer.firstname}') # rubocop:disable Lint/InterpolationCheck
+        end
+
         before do
-          organization.update!(signature: 'Org signature for #{ticket.customer.firstname}') # rubocop:disable Lint/InterpolationCheck
+          organization.update!(signature: organization_signature)
         end
 
         it 'uses the organization signature (rendered) instead of the group signature', :aggregate_failures do
           expect(resolved_result.authorized?).to be(true)
           signature = resolved_result.resolve[:fields].dig('body', :signature)
           expect(signature[:renderedBody]).to eq('Org signature for Elvis')
-          expect(signature[:internalId]).to be_nil
+          expect(signature[:internalId]).to eq(organization_signature.id)
         end
       end
 
-      context 'when the organization signature is blank' do
+      context 'when the organization has no signature selected' do
         it 'falls back to the group signature' do
           expect(resolved_result.resolve[:fields].dig('body', :signature, :renderedBody)).to eq('GROUP SIGNATURE')
         end
