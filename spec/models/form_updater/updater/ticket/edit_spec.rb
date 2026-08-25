@@ -134,6 +134,37 @@ RSpec.describe(FormUpdater::Updater::Ticket::Edit) do
       end
     end
 
+    context 'when the ticket organization has its own signature' do
+      let(:organization)  { create(:organization) }
+      let(:customer)      { create(:customer, firstname: 'Elvis', organization:) }
+      let(:ticket)        { create(:ticket, group:, customer:, organization:, title: 'Test ticket') }
+      let(:id)            { Gql::ZammadSchema.id_from_object(ticket) }
+      let(:data)          { { 'group_id' => group.id } }
+
+      before do
+        group.update!(signature: create(:signature, body: 'GROUP SIGNATURE'))
+      end
+
+      context 'when the organization signature is present' do
+        before do
+          organization.update!(signature: 'Org signature for #{ticket.customer.firstname}') # rubocop:disable Lint/InterpolationCheck
+        end
+
+        it 'uses the organization signature (rendered) instead of the group signature', :aggregate_failures do
+          expect(resolved_result.authorized?).to be(true)
+          signature = resolved_result.resolve[:fields].dig('body', :signature)
+          expect(signature[:renderedBody]).to eq('Org signature for Elvis')
+          expect(signature[:internalId]).to be_nil
+        end
+      end
+
+      context 'when the organization signature is blank' do
+        it 'falls back to the group signature' do
+          expect(resolved_result.resolve[:fields].dig('body', :signature, :renderedBody)).to eq('GROUP SIGNATURE')
+        end
+      end
+    end
+
     context 'when ticket has object attribute value with a historical value', db_strategy: :reset do
       let(:field_name) { SecureRandom.uuid }
       let(:screens) do

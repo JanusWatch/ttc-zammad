@@ -4482,15 +4482,6 @@ Setting.create!(
   frontend:    false
 )
 Setting.create_if_not_exists(
-  name:        '6006_postmaster_filter_identify_organization',
-  title:       __('Defines postmaster filter.'),
-  area:        'Postmaster::PreFilter',
-  description: __('Defines postmaster filter to identify ticket organization based on the mailbox the email arrived on.'),
-  options:     {},
-  state:       'Channel::Filter::IdentifyOrganization',
-  frontend:    false
-)
-Setting.create_if_not_exists(
   title:       __('Icinga integration'),
   name:        'icinga_integration',
   area:        'Integration::Switch',

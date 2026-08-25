@@ -17,7 +17,8 @@ module FormUpdater::Concerns::PreparesTicketSignature
 
     result_initialize_field('body')
 
-    if group_signature.nil?
+    signature = effective_signature
+    if signature.nil?
       result['body'][:signature] = nil
       return
     end
@@ -26,13 +27,33 @@ module FormUpdater::Concerns::PreparesTicketSignature
     ticket = object || Struct.new(:group).new(group)
 
     result['body'][:signature] = {
-      internalId:   group_signature.id,
+      internalId:   signature[:internal_id],
       renderedBody: NotificationFactory::Renderer.new(
         objects:  { user: current_user, ticket: },
-        template: group_signature.body_with_urls,
+        template: signature[:template],
         escape:   false
       ).render(debug_errors: false),
     }
+  end
+
+  # An Organization-level signature (richtext field on Organization) takes
+  # priority over the Group signature for outgoing replies, falling back to the
+  # group signature when the ticket's organization has none. Returns a hash of
+  # { internal_id:, template: } or nil.
+  def effective_signature
+    if (organization_body = organization_signature_body).present?
+      return { internal_id: nil, template: organization_body }
+    end
+
+    return nil if group_signature.nil?
+
+    { internal_id: group_signature.id, template: group_signature.body_with_urls }
+  end
+
+  # Only available for an existing ticket (reply); on the create screen the
+  # organization isn't established yet, so we fall back to the group signature.
+  def organization_signature_body
+    object&.organization&.signature.presence
   end
 
   def group_signature

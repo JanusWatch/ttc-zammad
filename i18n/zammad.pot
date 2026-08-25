@@ -5133,10 +5133,6 @@ msgstr ""
 msgid "Defines postmaster filter to identify ticket group."
 msgstr ""
 
-#: db/seeds/settings.rb:4488
-msgid "Defines postmaster filter to identify ticket organization based on the mailbox the email arrived on."
-msgstr ""
-
 #: db/seeds/settings.rb:4415
 msgid "Defines postmaster filter to manage Checkmk (http://mathias-kettner.com/check_mk.html) emails."
 msgstr ""
@@ -7685,6 +7681,10 @@ msgstr ""
 #: app/assets/javascripts/app/lib/app_post/business_hours.coffee:19
 #: app/assets/javascripts/app/views/calendar/index.jst.eco:56
 msgid "Friday"
+msgstr ""
+
+#: db/seeds/object_manager_attributes.rb:2033
+msgid "Friendly Name"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/postmaster_match.coffee:10
@@ -13489,6 +13489,10 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ai/provider.coffee:235
 msgid "Recognize image text (OCR)"
+msgstr ""
+
+#: db/seeds/object_manager_attributes.rb:2003
+msgid "Recommended Recipients"
 msgstr ""
 
 #: app/assets/javascripts/app/views/generic/object_import/index.jst.eco:12

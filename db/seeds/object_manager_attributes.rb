@@ -1997,6 +1997,106 @@ ObjectManager::Attribute.add(
 ObjectManager::Attribute.add(
   force:       true,
   object:      'Organization',
+  name:        'signature',
+  display:     __('Signature'),
+  data_type:   'richtext',
+  data_option: {
+    default:    '',
+    null:       true,
+    maxlength:  30_000,
+    do_not_log: true,
+  },
+  editable:    false,
+  internal:    true,
+  active:      true,
+  screens:     {
+    create: {
+      '-all-' => {
+        null: true,
+      },
+    },
+    edit:   {
+      '-all-' => {
+        null: true,
+      },
+    },
+  },
+  to_create:   false,
+  to_migrate:  false,
+  to_delete:   false,
+  position:    1500,
+)
+
+ObjectManager::Attribute.add(
+  force:       true,
+  object:      'Organization',
+  name:        'recommended_recipients',
+  display:     __('Recommended Recipients'),
+  data_type:   'richtext',
+  data_option: {
+    default:    '',
+    null:       true,
+    maxlength:  8000,
+    do_not_log: true,
+  },
+  editable:    false,
+  internal:    true,
+  active:      true,
+  screens:     {
+    create: {
+      '-all-' => {
+        null: true,
+      },
+    },
+    edit:   {
+      '-all-' => {
+        null: true,
+      },
+    },
+  },
+  to_create:   false,
+  to_migrate:  false,
+  to_delete:   false,
+  position:    1510,
+)
+
+ObjectManager::Attribute.add(
+  force:       true,
+  object:      'Organization',
+  name:        'friendly_name',
+  display:     __('Friendly Name'),
+  data_type:   'input',
+  data_option: {
+    type:       'text',
+    default:    '',
+    null:       true,
+    maxlength:  150,
+    do_not_log: true,
+  },
+  editable:    false,
+  internal:    true,
+  active:      true,
+  screens:     {
+    create: {
+      '-all-' => {
+        null: true,
+      },
+    },
+    edit:   {
+      '-all-' => {
+        null: true,
+      },
+    },
+  },
+  to_create:   false,
+  to_migrate:  false,
+  to_delete:   false,
+  position:    1520,
+)
+
+ObjectManager::Attribute.add(
+  force:       true,
+  object:      'Organization',
   name:        'note',
   display:     __('Note'),
   data_type:   'richtext',
