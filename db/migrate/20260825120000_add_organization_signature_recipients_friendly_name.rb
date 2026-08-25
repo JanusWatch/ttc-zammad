@@ -30,18 +30,22 @@ class AddOrganizationSignatureRecipientsFriendlyName < ActiveRecord::Migration[7
   private
 
   def add_organization_attribute(name, display, data_type, maxlength, position)
+    data_option = {
+      default:    '',
+      null:       true,
+      maxlength:  maxlength,
+      do_not_log: true,
+    }
+    # 'input' attributes require an explicit HTML input type; richtext does not.
+    data_option[:type] = 'text' if data_type == 'input'
+
     ObjectManager::Attribute.add(
       force:       true,
       object:      'Organization',
       name:        name,
       display:     display,
       data_type:   data_type,
-      data_option: {
-        default:    '',
-        null:       true,
-        maxlength:  maxlength,
-        do_not_log: true,
-      },
+      data_option: data_option,
       editable:    false,
       internal:    true,
       active:      true,
