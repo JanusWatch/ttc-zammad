@@ -109,6 +109,14 @@ function perform_restore {
 if [ -d "${RESTORE_DIR}" ] && [ -n "$(ls "${RESTORE_DIR}")" ]; then
   echo "Restoring from backup directory ${RESTORE_DIR}…"
   perform_restore
+elif [ "${BACKUP_ONESHOT}" = "yes" ]; then
+  # One-shot mode for external schedulers (e.g. Azure Container Apps Jobs that
+  # trigger the run themselves on a cron). Run a single backup and exit, so the
+  # job is recorded as succeeded. The internal daily loop below never exits, so
+  # under a scheduled one-shot job it gets killed at replicaTimeout and the run
+  # is (misleadingly) marked failed even though the backup completed.
+  check_zammad_ready
+  zammad_backup
 else
   check_zammad_ready
   echo "Starting backup loop…"
