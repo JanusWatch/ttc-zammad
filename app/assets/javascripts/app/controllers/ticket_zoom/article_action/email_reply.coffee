@@ -334,7 +334,7 @@ class EmailReply extends App.Controller
     if task && task.state && task.state.ticket && task.state.ticket.group_id
       group_id = task.state.ticket.group_id
 
-    result = App.SignatureHelper.findForGroup(group_id)
+    result = App.SignatureHelper.findForTicket(ticketCurrent, group_id)
 
     # remove signature if it was added but type is no longer email
     # https://github.com/zammad/zammad/issues/4453
@@ -409,7 +409,7 @@ class EmailReply extends App.Controller
     return if type isnt 'email'
 
     ticketCurrent = App.Ticket.fullLocal(ticket.id)
-    result = App.SignatureHelper.findForGroup(newGroupId)
+    result = App.SignatureHelper.findForTicket(ticketCurrent, newGroupId)
 
     body = ui.$('[data-name=body]')
 
